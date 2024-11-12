@@ -1,0 +1,59 @@
+<Window WindowStartupLocation="CenterOwner"
+        xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:GuiApplication.ViewModels"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="GuiApplication.SequenceBuilderWindow"
+        x:DataType="vm:SequenceAudioViewModel"
+        Title="Sequence Builder">
+
+  <DockPanel>
+    <Grid ColumnDefinitions="50*, 50*" RowDefinitions="*">
+
+      <!-- Inspector -->
+      <Border Grid.Column="1" Margin="2" BorderBrush="AliceBlue" BorderThickness="1">
+        <DockPanel>
+          <Label DockPanel.Dock="Top">Inspector</Label>
+
+          <ContentControl Content="{Binding SelectedNode}">
+            <ContentControl.ContentTemplate>
+              <DataTemplate x:DataType="vm:SequenceNodeViewModel">
+                <StackPanel DockPanel.Dock="Top" Spacing="5">
+
+                  <Grid ColumnDefinitions="50, *" RowDefinitions="Auto, Auto" VerticalAlignment="Top">
+                    <Label Grid.Column="0">Time</Label>
+                    <NumericUpDown Grid.Column="1" Increment="0.5" Value="{Binding StartTime}"/>
+                  </Grid>
+
+                  <ContentControl Content="{Binding Audio}"/>
+
+                </StackPanel>
+              </DataTemplate>
+            </ContentControl.ContentTemplate>
+          </ContentControl>
+          
+        </DockPanel>
+      </Border>
+
+      <!-- Audio -->
+      <Border Grid.Column="0" Margin="2" BorderBrush="AliceBlue" BorderThickness="1">
+        
+        <DockPanel>
+          
+          <StackPanel Margin="2" DockPanel.Dock="Bottom" Spacing="4" Orientation="Horizontal" HorizontalAlignment="Center">
+            <Button DockPanel.Dock="Left">OK</Button>
+            <Button DockPanel.Dock="Right">Cancel</Button>
+          </StackPanel>
+
+          <ContentControl Content="{Binding}"/>
+          
+        </DockPanel>
+
+      </Border>
+    </Grid>
+   
+  </DockPanel>
+  
+</Window>

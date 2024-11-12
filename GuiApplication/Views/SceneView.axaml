@@ -1,0 +1,53 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:GuiApplication.ViewModels"
+             xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
+             xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="GuiApplication.SceneView"
+             x:DataType="vm:SceneViewModel">
+
+  <DockPanel DragDrop.AllowDrop="True" Name="SceneRoot" Background="Black">
+
+    <DockPanel.ContextMenu>
+      <ContextMenu>
+        <MenuItem Header="Add File Audio"/>
+        <MenuItem Header="Add File List Audio" Command="{Binding AddListAudioCommand}"/>
+        <MenuItem Header="Add Sequence Audio" Command="{Binding AddSequenceAudioCommand}"/>
+      </ContextMenu>
+    </DockPanel.ContextMenu>
+    
+    <ItemsControl ItemsSource="{Binding AudioList}">
+      
+      <ItemsControl.ItemsPanel>
+        <ItemsPanelTemplate>
+          <WrapPanel Orientation="Horizontal"/>
+        </ItemsPanelTemplate>
+      </ItemsControl.ItemsPanel>
+
+      <ItemsControl.DataTemplates>
+
+        <!-- audio item -->
+        <DataTemplate DataType="vm:AudioViewModel">
+          <Border BorderThickness="1" BorderBrush="Gray" Margin="4">
+            <DockPanel>
+              <TextBlock Background="Black" HorizontalAlignment="Stretch" TextAlignment="Right" DockPanel.Dock="Top" Text="..." FontSize="10" Padding="4,0,4,0">
+                <i:Interaction.Behaviors>
+                  <ia:EventTriggerBehavior EventName="PointerReleased">
+                    <ia:InvokeCommandAction Command="{Binding SelectCommand}"/>
+                  </ia:EventTriggerBehavior>
+                </i:Interaction.Behaviors>
+              </TextBlock>
+              <Button Content="{Binding Name}" Height="50" VerticalContentAlignment="Center" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Command="{Binding PlayCommand}"/>
+            </DockPanel>
+          </Border>
+        </DataTemplate>
+        
+      </ItemsControl.DataTemplates>
+
+    </ItemsControl>
+  </DockPanel>
+
+</UserControl>

@@ -1,0 +1,136 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:themes="clr-namespace:Tabalonia.Themes.Fluent;assembly=Tabalonia"
+             x:Class="GuiApplication.App"
+             xmlns:vm="using:GuiApplication.ViewModels"
+             RequestedThemeVariant="Dark">
+             <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
+
+    <Application.Styles>
+      <FluentTheme>
+        <FluentTheme.Palettes>
+          <!-- from https://theme.xaml.live/ -->
+          <ColorPaletteResources x:Key="Dark" Accent="#ffcc4d11" AltHigh="Black" AltLow="Black" AltMedium="Black" AltMediumHigh="Black" AltMediumLow="Black" BaseHigh="White" BaseLow="#ff2f7bad" BaseMedium="#ff8dbfdf" BaseMediumHigh="#ffa5d0ec" BaseMediumLow="#ff5e9dc6" ChromeAltLow="#ffa5d0ec" ChromeBlackHigh="Black" ChromeBlackLow="#ffa5d0ec" ChromeBlackMedium="Black" ChromeBlackMediumLow="Black" ChromeDisabledHigh="#ff2f7bad" ChromeDisabledLow="#ff8dbfdf" ChromeGray="#ff76aed3" ChromeHigh="#ff76aed3" ChromeLow="#ff093b73" ChromeMedium="#ff134b82" ChromeMediumLow="#ff266b9f" ChromeWhite="White" ListLow="#ff134b82" ListMedium="#ff2f7bad" RegionColor="#ff0d2644" />
+          <ColorPaletteResources x:Key="Light" Accent="#ffcc4d11" AltHigh="Black" AltLow="Black" AltMedium="Black" AltMediumHigh="Black" AltMediumLow="Black" BaseHigh="White" BaseLow="#ff2f7bad" BaseMedium="#ff8dbfdf" BaseMediumHigh="#ffa5d0ec" BaseMediumLow="#ff5e9dc6" ChromeAltLow="#ffa5d0ec" ChromeBlackHigh="Black" ChromeBlackLow="#ffa5d0ec" ChromeBlackMedium="Black" ChromeBlackMediumLow="Black" ChromeDisabledHigh="#ff2f7bad" ChromeDisabledLow="#ff8dbfdf" ChromeGray="#ff76aed3" ChromeHigh="#ff76aed3" ChromeLow="#ff093b73" ChromeMedium="#ff134b82" ChromeMediumLow="#ff266b9f" ChromeWhite="White" ListLow="#ff134b82" ListMedium="#ff2f7bad" RegionColor="#ff0d2644" />
+        </FluentTheme.Palettes>
+      </FluentTheme>
+      <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml"/>
+      <themes:FluentTheme/>
+    </Application.Styles>
+
+  <Application.Resources>
+    
+    <!-- Base Audio -->
+    <DataTemplate x:Key="Gma.Templates.BaseAudio" DataType="vm:AudioViewModel">
+      <StackPanel Margin="2">
+
+        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" HorizontalAlignment="Left">
+          <Button Command="{Binding PreviewPlayCommand}" >Preview</Button>
+          <Button Command="{Binding PreviewStopCommand}">Stop</Button>
+          <Button Command="">X</Button>
+        </StackPanel>
+
+        <Label Grid.Column="0">Name</Label>
+        <TextBox Grid.Column="1" HorizontalAlignment="Stretch" Text="{Binding Name}"/>
+
+        <Label>Volume</Label>
+        <DockPanel HorizontalAlignment="Stretch">
+          <TextBlock Width="50" TextAlignment="Center" DockPanel.Dock="Left" HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding Volume}"/>
+          <Slider Value="{Binding Volume}" Margin="10,0,10,0" Minimum="0" Maximum="1" IsSnapToTickEnabled="True" TickFrequency="0.02"/>
+        </DockPanel>
+
+        <ToggleSwitch OnContent="True" OffContent="False" IsChecked="{Binding Loop}">Loop</ToggleSwitch>
+
+        <Grid ColumnDefinitions="50*,50*" RowDefinitions="*,*">
+          <Label Grid.Row="0" Grid.Column="0">Fade-In Time</Label>
+          <NumericUpDown Grid.Row="1" Grid.Column="0" Value="{Binding FadeInTime}"/>
+
+          <Label Grid.Row="0" Grid.Column="1">Fade-Out Time</Label>
+          <NumericUpDown Grid.Row="1" Grid.Column="1" Value="{Binding FadeOutTime}"/>
+        </Grid>
+
+      </StackPanel>
+    </DataTemplate>
+  </Application.Resources>
+
+  <Application.DataTemplates>
+    
+    <!-- File Audio -->
+    <DataTemplate x:DataType="vm:FileAudioViewModel">
+      <StackPanel Margin="2">
+
+        <ContentControl Content="{Binding}" ContentTemplate="{DynamicResource Gma.Templates.BaseAudio}"/>
+
+        <StackPanel DockPanel.Dock="Top" Spacing="5">
+
+          <Label>File</Label>
+          <Button HorizontalAlignment="Stretch" Content="{Binding Path}"/>
+
+        </StackPanel>
+
+      </StackPanel>
+    </DataTemplate>
+
+    <!-- File List Audio -->
+    <DataTemplate x:DataType="vm:FileListAudioViewModel">
+      <DockPanel Margin="4" Name="AvmRoot" VerticalAlignment="Stretch">
+
+        <ContentControl DockPanel.Dock="Top" Content="{Binding}" ContentTemplate="{DynamicResource Gma.Templates.BaseAudio}"/>
+
+        <Label DockPanel.Dock="Top">Files</Label>
+        <ScrollViewer>
+          <StackPanel>
+            <ItemsControl ItemsSource="{Binding Files}" Background="Black" DragDrop.AllowDrop="True">
+              <ItemsControl.ItemTemplate>
+                <DataTemplate x:DataType="vm:FileListAudioItemViewModel">
+                  <DockPanel>
+                    <Button DockPanel.Dock="Left"  Command="{Binding #AvmRoot.((vm:FileListAudioViewModel)DataContext).RemoveItemCommand}" CommandParameter="{Binding .}">X</Button>
+                    <Button Margin="5">
+                      <TextBlock TextWrapping="Wrap" Text="{Binding File}"/>
+                    </Button>
+                  </DockPanel>
+                </DataTemplate>
+              </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+            <Button HorizontalAlignment="Stretch">
+              <TextBlock TextAlignment="Center">+</TextBlock>
+            </Button>
+            
+          </StackPanel>
+        </ScrollViewer>
+
+      </DockPanel>
+    </DataTemplate>
+
+    <!-- Sequence Audio -->
+    <DataTemplate DataType="vm:SequenceAudioViewModel">
+      <DockPanel>
+
+        <ContentControl DockPanel.Dock="Top" Content="{Binding}" ContentTemplate="{DynamicResource Gma.Templates.BaseAudio}"/>
+
+        <StackPanel Margin="2" DockPanel.Dock="Top" Spacing="4" Orientation="Horizontal">
+          <Label DockPanel.Dock="Top">Nodes</Label>
+          <Button Content="+">
+            <Button.Flyout>
+              <MenuFlyout>
+                <MenuItem Header="Add File Audio" Command="{Binding AddNodeCommand}" CommandParameter="FileAudio"/>
+                <MenuItem Header="Add File List Audio" Command="{Binding AddNodeCommand}" CommandParameter="FileListAudio"/>
+              </MenuFlyout>
+            </Button.Flyout>
+          </Button>
+        </StackPanel>
+
+        <DataGrid SelectedItem="{Binding SelectedNode}" BorderBrush="Gray" BorderThickness="2" Margin="2" ItemsSource="{Binding Nodes}" IsReadOnly="False" GridLinesVisibility="All">
+          <DataGrid.Columns>
+            <DataGridTextColumn Width="*" Header="Name" Binding="{Binding Audio.Name}"/>
+            <DataGridTextColumn Header="Time" Binding="{Binding StartTime}"/>
+          </DataGrid.Columns>
+        </DataGrid>
+
+      </DockPanel>
+    </DataTemplate>
+    
+  </Application.DataTemplates>
+  
+</Application>

@@ -1,0 +1,61 @@
+<Window WindowStartupLocation="CenterOwner"
+        xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:GuiApplication.ViewModels"
+        mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="800"
+        xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
+        xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
+        x:Class="GuiApplication.ListAudioWindow"
+        x:DataType="vm:FileListAudioViewModel"
+        Title="Add List Audio">
+  <DockPanel Margin="4" Name="Root">
+    <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" HorizontalAlignment="Center">
+      <Button Command="{Binding PreviewPlayCommand}">Preview</Button>
+      <Button Command="{Binding PreviewStopCommand}">Stop</Button>
+    </StackPanel>
+
+    <StackPanel DockPanel.Dock="Top">
+      <Label>Name</Label>
+      <TextBox Text="{Binding Name}"/>
+      <StackPanel Orientation="Horizontal" Spacing="10">
+        <Label>Volume</Label>
+        <TextBlock VerticalAlignment="Center" Text="{Binding Volume}"/>
+      </StackPanel>
+      <Slider Margin="25,0,25,0" Value="{Binding Volume}" Minimum="0" Maximum="1" IsSnapToTickEnabled="True" TickFrequency="0.02"/>
+      <ToggleSwitch IsChecked="{Binding Random}">Random</ToggleSwitch>
+      <Label>Random Interval</Label>
+      <StackPanel Orientation="Horizontal">
+        <Label>Min</Label>
+        <NumericUpDown Value="{Binding IntervalMin}"/>
+        <Label Margin="20,0,0,0">Max</Label>
+        <NumericUpDown Value="{Binding IntervalMax}"/>
+      </StackPanel>
+    </StackPanel>
+
+    <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+      <Button Command="{Binding SortCommand}">Sort</Button>
+      <Button Command="{Binding ClearCommand}">Clear</Button>
+    </StackPanel>
+
+    <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Center">
+      <Button Command="{Binding OkCommand}">Ok</Button>
+      <Button Command="{Binding CancelCommand}">Cancel</Button>
+    </StackPanel>
+    
+    <ScrollViewer>
+      <ItemsControl ItemsSource="{Binding Files}" Background="Black" DragDrop.AllowDrop="True">
+        <ItemsControl.ItemTemplate>
+          <DataTemplate x:DataType="vm:FileListAudioItemViewModel">
+            <DockPanel>
+              <Button DockPanel.Dock="Left"  Command="{Binding #Root.((vm:FileListAudioViewModel)DataContext).RemoveItemCommand}" CommandParameter="{Binding .}">X</Button>
+              <TextBlock Margin="5" Text="{Binding File}"/>
+            </DockPanel>
+          </DataTemplate>
+        </ItemsControl.ItemTemplate>
+      </ItemsControl>
+    </ScrollViewer>
+    
+  </DockPanel>
+</Window>

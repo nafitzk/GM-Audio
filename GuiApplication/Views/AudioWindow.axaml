@@ -1,0 +1,41 @@
+<Window 
+        Width="400" Height="600"
+        WindowStartupLocation="CenterOwner"
+        xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:GuiApplication.ViewModels"
+        mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="450"
+        x:Class="GuiApplication.AudioWindow"
+        x:DataType="vm:AddAudioViewModel"
+        Title="Add Audio">
+
+  <Border BorderThickness="2" BorderBrush="{DynamicResource ThemeBorderLowBrush}" Margin="2">
+    <DockPanel>
+      <Button DockPanel.Dock="Top" HorizontalAlignment="Center">+</Button>
+
+      <StackPanel DockPanel.Dock="Bottom" Spacing="4" Orientation="Horizontal" HorizontalAlignment="Center">
+        <Button DockPanel.Dock="Left" Command="{Binding OkCommand}">OK</Button>
+        <Button DockPanel.Dock="Right" Command="{Binding CancelCommand}">Cancel</Button>
+      </StackPanel>
+
+      <ListBox BorderThickness="1" ItemsSource="{Binding AudioList}">
+        <ListBox.ItemTemplate>
+          <DataTemplate x:DataType="vm:FileAudioViewModel">
+            <StackPanel>
+              <TextBox Text="{Binding Name}"/>
+              <TextBox Text = "{Binding Path}">
+                <TextBox.InnerRightContent>
+                  <Button>...</Button>
+                </TextBox.InnerRightContent>
+              </TextBox>
+            </StackPanel>
+          </DataTemplate>
+        </ListBox.ItemTemplate>
+      </ListBox>
+      
+    </DockPanel>
+  </Border>
+  
+</Window>

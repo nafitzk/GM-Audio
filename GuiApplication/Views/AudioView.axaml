@@ -1,0 +1,28 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:GuiApplication.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="450" d:DesignHeight="450"
+             x:Class="GuiApplication.AudioView">
+  
+  <!-- AUDIO TYPES -->
+  <UserControl.DataTemplates>
+    <!-- DEFAULT AUDIO -->
+    <DataTemplate x:DataType="vm:AudioViewModel">
+      <Label>This is a base audio</Label>
+    </DataTemplate>
+
+    <!-- File Audio -->
+    <DataTemplate x:DataType="vm:FileAudioViewModel">
+      <Label>This is a file audio</Label>
+    </DataTemplate>
+    
+    <!-- File List Audio -->
+    <DataTemplate x:DataType="vm:FileListAudioViewModel">
+      <Label>This is a file list audio</Label>
+    </DataTemplate>
+    
+  </UserControl.DataTemplates>
+  
+</UserControl>
